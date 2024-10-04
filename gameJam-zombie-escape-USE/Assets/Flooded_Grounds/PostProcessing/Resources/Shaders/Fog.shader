@@ -30,7 +30,7 @@ Shader "Hidden/Post FX/Fog"
         sampler2D _CameraDepthTexture;
 
         half4 _FogColor;
-        float _Density;
+        float _Density;    // Keep _Density very low for reduced fog effect
         float _Start;
         float _End;
 
@@ -40,12 +40,12 @@ Shader "Hidden/Post FX/Fog"
         #if FOG_LINEAR
             fog = (_End - z) / (_End - _Start);
         #elif FOG_EXP
-            fog = exp2(-_Density * z);
+            fog = exp2(-_Density * z);   // Keep _Density very low (e.g., _Density = 0.01)
         #else // FOG_EXP2
             fog = _Density * z;
-            fog = exp2(-fog * fog);
+            fog = exp2(-fog * fog);      // Keep fog effect minimal
         #endif
-            return saturate(fog);
+            return saturate(fog * 0.05); // Reduce the fog effect by multiplying with a low value (e.g., 0.05)
         }
 
         float ComputeDistance(float depth)
