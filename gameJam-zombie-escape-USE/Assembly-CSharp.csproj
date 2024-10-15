@@ -99,6 +99,7 @@
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/DitheringComponent.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Utils/RenderTextureFactory.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/ChromaticAberrationModel.cs" />
+    <Compile Include="Assets/Flooded_Grounds/Scripts/ZombieSpawner.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/TaaComponent.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/TrackballAttribute.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/PostProcessingProfile.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/EyeAdaptationModel.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/FogModel.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/GrainComponent.cs" />
+    <Compile Include="Assets/Flooded_Grounds/Scripts/ZombieController.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/GetSetAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1021,7 +1023,9 @@
     <ProjectReference Include="Unity.Performance.Profile-Analyzer.Editor.csproj" />
     <ProjectReference Include="Unity.TestTools.CodeCoverage.Editor.csproj" />
     <ProjectReference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.csproj" />
+    <ProjectReference Include="Unity.AI.Navigation.csproj" />
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj" />
+    <ProjectReference Include="Unity.AI.Navigation.Updater.csproj" />
     <ProjectReference Include="Unity.VisualScripting.State.Editor.csproj" />
     <ProjectReference Include="Unity.Timeline.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Shared.Editor.csproj" />
@@ -1032,8 +1036,10 @@
     <ProjectReference Include="UnityEditor.UI.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Core.Editor.csproj" />
     <ProjectReference Include="Unity.Rider.Editor.csproj" />
+    <ProjectReference Include="Unity.AI.Navigation.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.State.csproj" />
     <ProjectReference Include="Unity.VSCode.Editor.csproj" />
+    <ProjectReference Include="Unity.AI.Navigation.Editor.ConversionSystem.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Flow.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Flow.Editor.csproj" />
   </ItemGroup>
