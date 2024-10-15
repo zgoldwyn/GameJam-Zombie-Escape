@@ -19,20 +19,26 @@ public class ZombieController : MonoBehaviour
     }
 
     void Update()
+{
+    // Calculate distance to the player
+    float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+    
+    // Update the "Distance" parameter in the Animator
+    animator.SetFloat("Distance", distanceToPlayer);
+    
+    // If the zombie is moving (i.e., distance is greater than attack range), set running to true
+    if (distanceToPlayer > attackDistance)
     {
-        if (!isAttacking)
-        {
-            // Move towards the player
-            agent.SetDestination(player.position);
-
-            // Check distance to player
-            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-            if (distanceToPlayer <= attackDistance)
-            {
-                StartCoroutine(AttackPlayer()); // Trigger attack animation
-            }
-        }
+        animator.SetBool("IsRunning", true);
+        agent.SetDestination(player.position); // Keep moving towards player
     }
+    else
+    {
+        animator.SetBool("IsRunning", false); // Stop running when close to attack
+        StartCoroutine(AttackPlayer()); // Trigger attack when in range
+    }
+}
+
 
     IEnumerator AttackPlayer()
     {
