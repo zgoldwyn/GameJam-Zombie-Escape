@@ -118,9 +118,6 @@
 -define:TEXTCORE_FONT_ENGINE_1_5_OR_NEWER
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
--r:"/Applications/Unity/Hub/Editor/2022.3.44f1/PlaybackEngines/AndroidPlayer/Unity.Android.Gradle.dll"
--r:"/Applications/Unity/Hub/Editor/2022.3.44f1/PlaybackEngines/AndroidPlayer/Unity.Android.GradleProject.dll"
--r:"/Applications/Unity/Hub/Editor/2022.3.44f1/PlaybackEngines/AndroidPlayer/Unity.Android.Types.dll"
 -r:"/Applications/Unity/Hub/Editor/2022.3.44f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.CoreModule.dll"
 -r:"/Applications/Unity/Hub/Editor/2022.3.44f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.DeviceSimulatorModule.dll"
 -r:"/Applications/Unity/Hub/Editor/2022.3.44f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.DiagnosticsModule.dll"
@@ -358,6 +355,9 @@
 -r:"Library/Bee/artifacts/200b0aE.dag/UnityEngine.UI.ref.dll"
 -analyzer:"/Applications/Unity/Hub/Editor/2022.3.44f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"/Applications/Unity/Hub/Editor/2022.3.44f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
+"Assets/AidanScripts/CameraScripts/MoveCamera.cs"
+"Assets/AidanScripts/CameraScripts/PlayerCam.cs"
+"Assets/AidanScripts/PlayerScripts/PlayerMovement.cs"
 "Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/GetSetAttribute.cs"
 "Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/MinAttribute.cs"
 "Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/TrackballAttribute.cs"
@@ -403,8 +403,8 @@
 "Assets/Flooded_Grounds/PostProcessing/Runtime/Utils/MaterialFactory.cs"
 "Assets/Flooded_Grounds/PostProcessing/Runtime/Utils/RenderTextureFactory.cs"
 "Assets/Flooded_Grounds/PostProcessing/Utilities/CustomMotionTexture/ExampleWheelController.cs"
+"Assets/Flooded_Grounds/Scripts/CameraScripts/PlayerCam.cs"
 "Assets/Flooded_Grounds/Scripts/DisableRenderer.cs"
-"Assets/Flooded_Grounds/Scripts/FPSController/CharController_Motor.cs"
 "Assets/Flooded_Grounds/Scripts/FPSDisplay.cs"
 "Assets/Flooded_Grounds/Scripts/WaterFloat.cs"
 "Assets/Flooded_Grounds/Scripts/ZombieController.cs"
