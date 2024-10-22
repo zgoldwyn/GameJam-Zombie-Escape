@@ -67,6 +67,7 @@
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/BloomModel.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/PostProcessingBehaviour.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/ColorGradingComponent.cs" />
+    <Compile Include="Assets/PlayerCameraMovement/PlayerScripts/PlayerMovement.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/MotionBlurModel.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/EyeAdaptationComponent.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/DepthOfFieldComponent.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/MotionBlurComponent.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/PostProcessingModel.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Utils/GraphicsUtils.cs" />
-    <Compile Include="Assets/Flooded_Grounds/Scripts/FPSController/CharController_Motor.cs" />
+    <Compile Include="Assets/PlayerCameraMovement/CameraScripts/MoveCamera.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/DepthOfFieldModel.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/ColorGradingModel.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/BloomComponent.cs" />
@@ -106,8 +107,10 @@
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/VignetteComponent.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/TrackballGroupAttribute.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/BuiltinDebugViewsComponent.cs" />
+    <Compile Include="Assets/Flooded_Grounds/Scripts/CardAttack.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/ChromaticAberrationComponent.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/BuiltinDebugViewsModel.cs" />
+    <Compile Include="Assets/Flooded_Grounds/Scripts/CameraScripts/PlayerCam.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/ScreenSpaceReflectionComponent.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/AntialiasingModel.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Models/EyeAdaptationModel.cs" />
@@ -115,6 +118,7 @@
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Components/GrainComponent.cs" />
     <Compile Include="Assets/Flooded_Grounds/Scripts/ZombieController.cs" />
     <Compile Include="Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/GetSetAttribute.cs" />
+    <Compile Include="Assets/PlayerCameraMovement/CameraScripts/PlayerCam.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/Flooded_Grounds/PostProcessing/Resources/Shaders/ScreenSpaceReflection.shader" />
