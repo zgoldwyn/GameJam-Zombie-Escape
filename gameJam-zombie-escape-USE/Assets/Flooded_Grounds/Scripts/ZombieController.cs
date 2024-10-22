@@ -11,8 +11,6 @@ public class ZombieController : MonoBehaviour
     public float attackInterval = 1f; // Time between attacks
     public float attackAnimationDuration = 1f; // Duration of the attack animation
     public float health = 100f; // Health value for the zombie
-    public float bulletDamage = 25f; // Amount of damage taken from a bullet
-
     private bool isAttacking = false; // Flag to control attack coroutine
     private float nextAttackTime = 0f; // Tracks time for the next attack
     private ZombieSpawner spawner; // Reference to the ZombieSpawner
@@ -60,6 +58,11 @@ public class ZombieController : MonoBehaviour
         }
     }
 
+    public int GetDamage()
+    {
+        return Random.Range(1, 14); // Random.Range with an inclusive lower bound and exclusive upper bound
+    }
+
     // Coroutine for handling attacking behavior
     IEnumerator AttackPlayer()
     {
@@ -83,7 +86,7 @@ public class ZombieController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet")) // Check if the object is a bullet
         {
-            TakeDamage(bulletDamage); // Apply damage to the zombie
+            TakeDamage(GetDamage()); // Apply damage to the zombie
             Destroy(collision.gameObject); // Destroy the bullet after collision
         }
     }

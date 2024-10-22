@@ -9,7 +9,7 @@ public class ZombieSpawner : MonoBehaviour
     public Transform player; // Reference to the player for spawning near them
     public int poolSize = 15; // Number of zombies in the pool
     public float spawnHeight = 10f; // Height from which zombies spawn
-    public float spawnRadius = 30f; // Radius around the player where zombies can spawn
+    public float spawnRadius = 100f; // Radius around the player where zombies can spawn
     public float spawnRate = 5f; // Time between spawn attempts
     public float respawnDelay = 1f; // Delay before respawning zombies after death
 
