@@ -355,9 +355,6 @@
 -r:"Library/Bee/artifacts/200b0aE.dag/UnityEngine.UI.ref.dll"
 -analyzer:"/Applications/Unity/Hub/Editor/2022.3.44f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"/Applications/Unity/Hub/Editor/2022.3.44f1/Unity.app/Contents/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
-"Assets/AidanScripts/CameraScripts/MoveCamera.cs"
-"Assets/AidanScripts/CameraScripts/PlayerCam.cs"
-"Assets/AidanScripts/PlayerScripts/PlayerMovement.cs"
 "Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/GetSetAttribute.cs"
 "Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/MinAttribute.cs"
 "Assets/Flooded_Grounds/PostProcessing/Runtime/Attributes/TrackballAttribute.cs"
@@ -409,6 +406,9 @@
 "Assets/Flooded_Grounds/Scripts/WaterFloat.cs"
 "Assets/Flooded_Grounds/Scripts/ZombieController.cs"
 "Assets/Flooded_Grounds/Scripts/ZombieSpawner.cs"
+"Assets/PlayerCameraMovement/CameraScripts/MoveCamera.cs"
+"Assets/PlayerCameraMovement/CameraScripts/PlayerCam.cs"
+"Assets/PlayerCameraMovement/PlayerScripts/PlayerMovement.cs"
 -langversion:9.0
 /deterministic
 /optimize+
