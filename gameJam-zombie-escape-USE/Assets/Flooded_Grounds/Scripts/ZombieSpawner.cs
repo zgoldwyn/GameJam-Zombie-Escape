@@ -8,21 +8,13 @@ public class ZombieSpawner : MonoBehaviour
     [SerializeField] public GameObject[] zombiePool; // Array to hold a pool of zombies
     public Transform player; // Reference to the player for spawning near them
     public int poolSize = 15; // Number of zombies in the pool
-    public float spawnHeight = 10f; // Height from which zombies spawn
+    public float spawnHeight = 100f; // Height from which zombies spawn
     public float spawnRadius = 100f; // Radius around the player where zombies can spawn
     public float spawnRate = 5f; // Time between spawn attempts
     public float respawnDelay = 1f; // Delay before respawning zombies after death
 
     private void Start()
     {
-        // Initialize the pool of zombies
-        for (int i = 0; i < poolSize; i++)
-        {
-            // Instantiate all zombies at the start and deactivate them
-            zombiePool[i] = Instantiate(zombiePrefab);
-            zombiePool[i].SetActive(false); // Deactivate them initially
-        }
-
         StartCoroutine(SpawnZombies()); // Begin the spawn cycle
     }
 
@@ -76,21 +68,13 @@ public class ZombieSpawner : MonoBehaviour
     {
         // Get a random point inside a circle and place it 10 units above ground
         Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
-        Vector3 spawnPosition = new Vector3(player.position.x + randomCircle.x, spawnHeight, player.position.z + randomCircle.y);
+        Vector3 spawnPosition = new Vector3(player.position.x + randomCircle.x, player.position.y + spawnHeight, player.position.z + randomCircle.y);
         return spawnPosition;
     }
 
     // Method to deactivate zombies when they die, called from the ZombieController
-    public void OnZombieDeath(GameObject zombie)
-    {
-        zombie.SetActive(false); // Deactivate the zombie
-        StartCoroutine(RespawnZombie(zombie)); // Respawn after a delay
-    }
+    
 
     // Coroutine to respawn the zombie after death
-    IEnumerator RespawnZombie(GameObject zombie)
-    {
-        yield return new WaitForSeconds(respawnDelay);
-        zombie.SetActive(false); // Deactivate until it respawns
-    }
+    
 }

@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class ZombieController : MonoBehaviour
 {
     public Transform player; // Player's position
-    private NavMeshAgent agent; // Zombie's NavMesh agent for pathfinding
+    public NavMeshAgent agent; // Zombie's NavMesh agent for pathfinding
     private Animator animator; // To handle animations
     public float attackDistance = 1.5f; // Distance to trigger attack
     public float attackInterval = 1f; // Time between attacks
@@ -14,6 +14,7 @@ public class ZombieController : MonoBehaviour
     private bool isAttacking = false; // Flag to control attack coroutine
     private float nextAttackTime = 0f; // Tracks time for the next attack
     private ZombieSpawner spawner; // Reference to the ZombieSpawner
+    public bool isFalling = false;
 
     void Start()
     {
@@ -26,11 +27,14 @@ public class ZombieController : MonoBehaviour
     {
         // Calculate distance to the player
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+    
+        // If the zombie is falling, do not process further
+        if (isFalling) return;
         
-        // Update the "Distance" parameter in the Animator
+        // Update Animator distance
         animator.SetFloat("Distance", distanceToPlayer);
         
-        // If the zombie is moving (i.e., distance is greater than attack range), set running to true
+        // Handle movement towards the player
         if (distanceToPlayer > attackDistance)
         {
             if (!isAttacking)
@@ -106,6 +110,7 @@ public class ZombieController : MonoBehaviour
     {
         animator.SetTrigger("Die"); // Trigger the death animation
         agent.isStopped = true; // Stop the zombie's movement
-        spawner.OnZombieDeath(gameObject); // Notify the spawner to respawn this zombie
+        gameObject.SetActive(false); // Deactivate the zombie
+        
     }
 }
