@@ -66,11 +66,13 @@ public class ZombieController : MonoBehaviour
         {
             Die();
         }
+        
     }
 
     public int GetDamage()
     {
         return Random.Range(1, 14); // Random damage between 1 and 13
+
     }
 
     // Coroutine for handling attacking behavior
@@ -102,7 +104,7 @@ public class ZombieController : MonoBehaviour
     }
 
     // Reduce the zombie's health by the damage amount
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         health -= damage;
         if (health <= 0)
