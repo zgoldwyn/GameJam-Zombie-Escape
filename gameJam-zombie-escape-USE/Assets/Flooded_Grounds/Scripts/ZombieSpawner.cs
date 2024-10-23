@@ -108,10 +108,5 @@ public class ZombieSpawner : MonoBehaviour
         Vector3 spawnPosition = new Vector3(player.position.x + randomCircle.x, player.position.y + spawnHeight, player.position.z + randomCircle.y);
         return spawnPosition;
     }
-
-    // Method to deactivate zombies when they die, called from the ZombieController
-    
-
-    // Coroutine to respawn the zombie after death
     
 }
