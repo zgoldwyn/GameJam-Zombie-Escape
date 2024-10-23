@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class ZombieSpawner : MonoBehaviour
     public int poolSize = 15; // Number of zombies in the pool
     public float spawnHeight = 100f; // Height from which zombies spawn
     public float spawnRadius = 100f; // Radius around the player where zombies can spawn
-    public float spawnRate = 5f; // Time between spawn attempts
-    public float respawnDelay = 1f; // Delay before respawning zombies after death
+    public float spawnRate = 3f; // Time between spawn attempts
+    public float respawnDelay = 2f; // Delay before respawning zombies after death
 
     private void Start()
     {
@@ -34,9 +35,7 @@ public class ZombieSpawner : MonoBehaviour
                     // Move the zombie to the spawn position and activate it
                     zombiePool[i].transform.position = spawnPosition;
                     zombiePool[i].SetActive(true); // Activate the zombie
-                    Rigidbody rb = zombiePool[i].GetComponent<Rigidbody>();
-                    rb.isKinematic = false; // Allow the zombie to fall
-
+                    
                     // Call a coroutine to activate zombie behavior after it falls
                     StartCoroutine(ActivateZombieAfterFall(zombiePool[i]));
 
@@ -52,16 +51,54 @@ public class ZombieSpawner : MonoBehaviour
     // Coroutine to handle behavior activation after the zombie falls
     IEnumerator ActivateZombieAfterFall(GameObject zombie)
     {
-        // Wait for 1 second to simulate the fall
-        yield return new WaitForSeconds(respawnDelay);
-
+        NavMeshAgent agent = zombie.GetComponent<NavMeshAgent>();
         Rigidbody rb = zombie.GetComponent<Rigidbody>();
-        rb.isKinematic = true; // Disable physics once the zombie has landed
+        Animator animator = zombie.GetComponent<Animator>();
+        
+        // Disable the NavMeshAgent during the fall
+        agent.enabled = false; 
+
+        // Set the falling trigger in the Animator
+        animator.SetBool("isFalling", true);
+        
+        // Wait for the zombie to hit the ground
+        while (zombie.transform.position.y > Terrain.activeTerrain.SampleHeight(zombie.transform.position) + 0.5f)
+        {
+            yield return null; // Wait for the next frame
+        }
+
+        // Once the zombie has hit the ground, deactivate the falling state
+        animator.SetBool("isFalling", false);
+
+        // Ensure the zombie is placed on the NavMesh
+        Vector3 finalPosition;
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(zombie.transform.position, out hit, 5f, NavMesh.AllAreas))
+        {
+            finalPosition = hit.position;
+        }
+        else
+        {
+            Debug.LogWarning("Zombie not placed on NavMesh!");
+            yield break;
+        }
+
+        // Set the zombie's position to the valid NavMesh position
+        zombie.transform.position = finalPosition;
+
+        // Disable physics after landing
+        rb.isKinematic = true;
+
+        // Enable the NavMeshAgent now that the zombie has landed
+        agent.enabled = true;
 
         // Enable the zombie's movement and behavior scripts
         ZombieController zombieController = zombie.GetComponent<ZombieController>();
         zombieController.enabled = true;
     }
+
+
 
     // Generate a random spawn position around the player
     Vector3 GetRandomSpawnPosition()
