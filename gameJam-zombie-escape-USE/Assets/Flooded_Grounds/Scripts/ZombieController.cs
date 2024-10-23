@@ -14,7 +14,7 @@ public class ZombieController : MonoBehaviour
     private bool isAttacking = false; // Flag to control attack coroutine
     private float nextAttackTime = 0f; // Tracks time for the next attack
     private ZombieSpawner spawner; // Reference to the ZombieSpawner
-    public bool isFalling = false;
+    public bool isFalling = false; // Detect if the zombie is falling
 
     void Start()
     {
@@ -25,13 +25,19 @@ public class ZombieController : MonoBehaviour
 
     void Update()
     {
+        // Check if the agent is valid and is on the NavMesh
+        if (agent == null || !agent.isOnNavMesh)
+        {
+            return; // If not, don't proceed further to avoid errors
+        }
+
         // Calculate distance to the player
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
     
         // If the zombie is falling, do not process further
         if (isFalling) return;
         
-        // Update Animator distance
+        // Update Animator with distance to player
         animator.SetFloat("Distance", distanceToPlayer);
         
         // Handle movement towards the player
@@ -64,7 +70,7 @@ public class ZombieController : MonoBehaviour
 
     public int GetDamage()
     {
-        return Random.Range(1, 14); // Random.Range with an inclusive lower bound and exclusive upper bound
+        return Random.Range(1, 14); // Random damage between 1 and 13
     }
 
     // Coroutine for handling attacking behavior
@@ -74,10 +80,10 @@ public class ZombieController : MonoBehaviour
         agent.isStopped = true; // Stop the agent from moving while attacking
         animator.SetTrigger("Attack"); // Trigger attack animation
 
-        // Wait for the attack animation to finish playing (set the duration of the animation)
+        // Wait for the attack animation to finish playing
         yield return new WaitForSeconds(attackAnimationDuration);
 
-        // Set the next attack time to be current time + interval, allowing dynamic adjustment
+        // Set the next attack time
         nextAttackTime = Time.time + attackInterval;
 
         // After the attack, reset the attacking flag and resume movement
@@ -111,6 +117,5 @@ public class ZombieController : MonoBehaviour
         animator.SetTrigger("Die"); // Trigger the death animation
         agent.isStopped = true; // Stop the zombie's movement
         gameObject.SetActive(false); // Deactivate the zombie
-        
     }
 }
