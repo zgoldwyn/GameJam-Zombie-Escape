@@ -119,7 +119,7 @@ public class ZombieController : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet")) // Check if the object is a bullet
         {
             TakeDamage(GetDamage()); // Apply damage to the zombie
-            Destroy(collision.gameObject); // Destroy the bullet after collision
+            collision.gameObject.SetActive(false); // Destroy the bullet after collision
         }
     }
 

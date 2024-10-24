@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CardsScript : MonoBehaviour{
-    [SerializeField] public GameObject card;
+    [SerializeField] public GameObject[] cardArr;
 
     [SerializeField] public float shootForce, upwardForce;
 
     [SerializeField] public float timeBetweenShooting, spread, timeBetweenShots;
-    [SerializeField] bool shooting, readyToShoot, allowInvoke;
+    bool shooting, readyToShoot, allowInvoke, hasShot;
     [SerializeField] public Camera fpsCam;
     [SerializeField] public Transform attackPoint;
+
+    public GameObject currentCard;
 
     private void Awake(){
 
@@ -22,9 +24,14 @@ public class CardsScript : MonoBehaviour{
 
     private void MyInput(){
         shooting = Input.GetKey(KeyCode.Mouse0);
-
-        if (shooting){
+        
+        if (shooting && !hasShot){
             Shoot();
+            hasShot = true;
+        }
+
+        if (!shooting){
+            hasShot = false;
         }
     }
 
@@ -42,13 +49,19 @@ public class CardsScript : MonoBehaviour{
         }
 
         Vector3 directionWithoutSpread = targetPoint - attackPoint.position;
+        for(int n=0; n < cardArr.Length; n++){
+            if(!cardArr[n].activeInHierarchy){
+                cardArr[n].SetActive(true);
+                currentCard = cardArr[n];
+                break;
 
-        GameObject curentCard = Instantiate(card, attackPoint.position, Quaternion.identity);
+            }
+        }
 
-        curentCard.transform.forward = directionWithoutSpread.normalized;
+        currentCard.transform.forward = directionWithoutSpread.normalized;
 
-        curentCard.GetComponent<Rigidbody>().AddForce(directionWithoutSpread.normalized * shootForce, ForceMode.Impulse);
-        curentCard.GetComponent<Rigidbody>().AddForce(fpsCam.transform.up * upwardForce, ForceMode.Impulse);
+        currentCard.GetComponent<Rigidbody>().AddForce(directionWithoutSpread.normalized * shootForce, ForceMode.Impulse);
+        currentCard.GetComponent<Rigidbody>().AddForce(fpsCam.transform.up * upwardForce, ForceMode.Impulse);
 
         if (allowInvoke){
                 Invoke("ResetShot", timeBetweenShooting);
