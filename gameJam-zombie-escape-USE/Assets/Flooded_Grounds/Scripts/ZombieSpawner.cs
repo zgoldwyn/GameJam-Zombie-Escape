@@ -47,17 +47,7 @@ public class ZombieSpawner : MonoBehaviour
             yield return new WaitForSeconds(spawnRate);
         }
     }
-    IEnumerator SpawnOneZombie(GameObject z){
-        // Get a random position within a circle around the player
-        Vector3 spawnPosition = GetRandomSpawnPosition();
-
-        // Move the zombie to the spawn position and activate it
-        z.transform.position = spawnPosition;
-        z.SetActive(true); // Activate the zombie
-        
-        // Call a coroutine to activate zombie behavior after it falls
-        yield return StartCoroutine(ActivateZombieAfterFall(z));
-    }
+    
 
     // Coroutine to handle behavior activation after the zombie falls
     IEnumerator ActivateZombieAfterFall(GameObject zombie)
@@ -66,12 +56,16 @@ public class ZombieSpawner : MonoBehaviour
         Rigidbody rb = zombie.GetComponent<Rigidbody>();
         Animator animator = zombie.GetComponent<Animator>();
         
-        // Disable the NavMeshAgent during the fall
-        agent.enabled = false; 
+        // Enable gravity for the Rigidbody
+        rb.isKinematic = false;
+        rb.useGravity = true;  // Ensure gravity is applied
 
-        // Set the falling trigger in the Animator
-        animator.SetBool("isFalling", true);
+        // Disable the NavMeshAgent during the fall
+        agent.enabled = false;
         
+        // Set the falling trigger in the Animator (if relevant)
+        animator.SetBool("isFalling", true);
+
         // Wait for the zombie to hit the ground
         while (zombie.transform.position.y > Terrain.activeTerrain.SampleHeight(zombie.transform.position) + 0.5f)
         {
@@ -100,6 +94,7 @@ public class ZombieSpawner : MonoBehaviour
 
         // Disable physics after landing
         rb.isKinematic = true;
+        rb.useGravity = false;  // Disable gravity once landed
 
         // Enable the NavMeshAgent now that the zombie has landed
         agent.enabled = true;
@@ -108,6 +103,7 @@ public class ZombieSpawner : MonoBehaviour
         ZombieController zombieController = zombie.GetComponent<ZombieController>();
         zombieController.enabled = true;
     }
+
 
 
 
@@ -120,7 +116,21 @@ public class ZombieSpawner : MonoBehaviour
         return spawnPosition;
     }
     public void Die(GameObject z){
-        StartCoroutine(SpawnOneZombie(z));
+        // Get a random position within a circle around the player
+        if (!z.activeInHierarchy)
+        {
+            // Get a random position within a circle around the player
+            Vector3 spawnPosition_ = GetRandomSpawnPosition();
+
+            // Move the zombie to the spawn position and activate it
+            z.transform.position = spawnPosition_;
+            z.SetActive(true); // Activate the zombie
+            
+            
+            // Call a coroutine to activate zombie behavior after it falls
+            StartCoroutine(ActivateZombieAfterFall(z));
+
+        }
     }
     
 }
