@@ -85,7 +85,7 @@ public class ZombieController : MonoBehaviour
             ZombieController[] zombies = FindObjectsOfType<ZombieController>();
             foreach (ZombieController zombie in zombies)
             {
-                zombie.TakeDamage(5); // Apply 10 damage to all zombies for testing purposes
+                zombie.TakeDamage(GetDamage()); 
             }
         }
     }
@@ -141,10 +141,28 @@ public class ZombieController : MonoBehaviour
     }
 
     // Handle zombie death and call the respawn in the spawner
-    void Die()
+    public void Die()
     {
-        animator.SetTrigger("Die"); // Trigger the death animation
-        agent.isStopped = true; // Stop the zombie's movement
-        gameObject.SetActive(false); // Deactivate the zombie
+        // Stop the zombie's movement and behavior
+        agent.isStopped = true;
+        agent.enabled = false; // Disable the NavMeshAgent to prevent unwanted movement
+
+        // Reset health and behavior states
+        health = 100f;
+        isAttacking = false;
+        isFalling = true;
+
+        // Deactivate the zombie
+        gameObject.SetActive(false);
+
+        // Call the ZombieSpawner's Die method
+        if (spawner != null)
+        {
+            spawner.Die(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("ZombieSpawner not found! Ensure there is a ZombieSpawner in the scene.");
+        }
     }
 }
