@@ -77,6 +77,17 @@ public class ZombieController : MonoBehaviour
         {
             Die();
         }
+
+        // Listen for the 'T' key press and apply damage to all zombies
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            // Find all zombies in the scene
+            ZombieController[] zombies = FindObjectsOfType<ZombieController>();
+            foreach (ZombieController zombie in zombies)
+            {
+                zombie.TakeDamage(5); // Apply 10 damage to all zombies for testing purposes
+            }
+        }
     }
 
     public int GetDamage()

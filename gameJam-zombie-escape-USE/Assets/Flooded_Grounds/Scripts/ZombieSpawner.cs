@@ -49,18 +49,19 @@ public class ZombieSpawner : MonoBehaviour
     }
 
     // Coroutine to handle behavior activation after the zombie falls
-    IEnumerator ActivateZombieAfterFall(GameObject zombie)
+        IEnumerator ActivateZombieAfterFall(GameObject zombie)
     {
         NavMeshAgent agent = zombie.GetComponent<NavMeshAgent>();
         Rigidbody rb = zombie.GetComponent<Rigidbody>();
         Animator animator = zombie.GetComponent<Animator>();
-        
-        // Disable the NavMeshAgent during the fall
-        agent.enabled = false; 
+
+        // Disable the NavMeshAgent and physics during the fall
+        agent.enabled = false;
+        //rb.isKinematic = false; // Allow physics to apply during the fall
 
         // Set the falling trigger in the Animator
         animator.SetBool("isFalling", true);
-        
+
         // Wait for the zombie to hit the ground
         while (zombie.transform.position.y > Terrain.activeTerrain.SampleHeight(zombie.transform.position) + 0.5f)
         {
@@ -74,14 +75,16 @@ public class ZombieSpawner : MonoBehaviour
         Vector3 finalPosition;
         NavMeshHit hit;
 
+        // Force sample the NavMesh to ensure the zombie is on a valid position
         if (NavMesh.SamplePosition(zombie.transform.position, out hit, 5f, NavMesh.AllAreas))
         {
             finalPosition = hit.position;
         }
         else
         {
-            Debug.LogWarning("Zombie not placed on NavMesh!");
-            yield break;
+            Debug.LogWarning("Zombie not placed on NavMesh! Respawning at a new position.");
+            // If the zombie isn't on a valid NavMesh position, move it to a valid spawn point
+            finalPosition = GetRandomSpawnPosition();
         }
 
         // Set the zombie's position to the valid NavMesh position
@@ -97,6 +100,8 @@ public class ZombieSpawner : MonoBehaviour
         ZombieController zombieController = zombie.GetComponent<ZombieController>();
         zombieController.enabled = true;
     }
+
+
 
 
 
