@@ -1,6 +1,7 @@
-using System.Collections;
+using System.Collections; // For IEnumerator
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI; // For handling UI elements
 
 public class ZombieController : MonoBehaviour
 {
@@ -16,11 +17,21 @@ public class ZombieController : MonoBehaviour
     private ZombieSpawner spawner; // Reference to the ZombieSpawner
     public bool isFalling = false; // Detect if the zombie is falling
 
+    // Health bar UI
+    public Slider healthBarSlider; // Reference to the slider in the canvas
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>(); // Get NavMeshAgent
         animator = GetComponent<Animator>(); // Get Animator
         spawner = FindObjectOfType<ZombieSpawner>(); // Get the ZombieSpawner in the scene
+
+        // Set the max value of the health bar
+        if (healthBarSlider != null)
+        {
+            healthBarSlider.maxValue = health; // Set the maximum value to match health
+            healthBarSlider.value = health; // Set the current value
+        }
     }
 
     void Update()
@@ -66,13 +77,11 @@ public class ZombieController : MonoBehaviour
         {
             Die();
         }
-        
     }
 
     public int GetDamage()
     {
         return Random.Range(1, 14); // Random damage between 1 and 13
-
     }
 
     // Coroutine for handling attacking behavior
@@ -107,6 +116,13 @@ public class ZombieController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+
+        // Update the health bar
+        if (healthBarSlider != null)
+        {
+            healthBarSlider.value = health; // Update the slider value
+        }
+
         if (health <= 0)
         {
             Die(); // Trigger death if health reaches zero
