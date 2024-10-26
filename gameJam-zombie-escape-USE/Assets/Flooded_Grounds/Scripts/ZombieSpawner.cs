@@ -79,18 +79,17 @@ public class ZombieSpawner : MonoBehaviour
         Vector3 finalPosition;
         NavMeshHit hit;
 
+        // Sample the NavMesh to find a valid position
         if (NavMesh.SamplePosition(zombie.transform.position, out hit, 5f, NavMesh.AllAreas))
         {
             finalPosition = hit.position;
+            zombie.transform.position = finalPosition;
         }
         else
         {
             Debug.LogWarning("Zombie not placed on NavMesh!");
             yield break;
         }
-
-        // Set the zombie's position to the valid NavMesh position
-        zombie.transform.position = finalPosition;
 
         // Disable physics after landing
         rb.isKinematic = true;
@@ -104,9 +103,6 @@ public class ZombieSpawner : MonoBehaviour
         zombieController.enabled = true;
     }
 
-
-
-
     // Generate a random spawn position around the player
     Vector3 GetRandomSpawnPosition()
     {
@@ -115,22 +111,28 @@ public class ZombieSpawner : MonoBehaviour
         Vector3 spawnPosition = new Vector3(player.position.x + randomCircle.x, player.position.y + spawnHeight, player.position.z + randomCircle.y);
         return spawnPosition;
     }
-    public void Die(GameObject z){
-        // Get a random position within a circle around the player
-        if (!z.activeInHierarchy)
+
+    public void Die(GameObject zombie)
+    {
+        // Find a valid position on the NavMesh
+        Vector3 spawnPosition = GetRandomSpawnPosition();
+
+        // Make sure the position is valid on the NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(spawnPosition, out hit, 10f, NavMesh.AllAreas))
         {
-            // Get a random position within a circle around the player
-            Vector3 spawnPosition_ = GetRandomSpawnPosition();
+            spawnPosition = hit.position; // Set the spawn position to the nearest valid point on the NavMesh
+        }
+        else
+        {
+            Debug.LogWarning("Could not find valid NavMesh position for respawn.");
+        }
 
-            // Move the zombie to the spawn position and activate it
-            z.transform.position = spawnPosition_;
-            z.SetActive(true); // Activate the zombie
-            
-            
-            // Call a coroutine to activate zombie behavior after it falls
-            StartCoroutine(ActivateZombieAfterFall(z));
-
+        // Call the respawn function on the zombie
+        ZombieController zombieController = zombie.GetComponent<ZombieController>();
+        if (zombieController != null)
+        {
+            zombieController.Respawn(spawnPosition); 
         }
     }
-    
 }

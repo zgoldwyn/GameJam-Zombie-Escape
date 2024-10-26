@@ -1,7 +1,7 @@
-using System.Collections; // For IEnumerator
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI; // For handling UI elements
+using UnityEngine.UI;
 
 public class ZombieController : MonoBehaviour
 {
@@ -36,22 +36,14 @@ public class ZombieController : MonoBehaviour
 
     void Update()
     {
-        // Check if the agent is valid and is on the NavMesh
-        if (agent == null || !agent.isOnNavMesh)
-        {
-            return; // If not, don't proceed further to avoid errors
-        }
+        if (agent == null || !agent.isOnNavMesh) return; // Ensure the agent is on the NavMesh
 
-        // Calculate distance to the player
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position); // Distance to player
     
-        // If the zombie is falling, do not process further
-        if (isFalling) return;
+        if (isFalling) return; // Skip processing while falling
         
-        // Update Animator with distance to player
-        animator.SetFloat("Distance", distanceToPlayer);
+        animator.SetFloat("Distance", distanceToPlayer); // Update Animator with distance to player
         
-        // Handle movement towards the player
         if (distanceToPlayer > attackDistance)
         {
             if (!isAttacking)
@@ -63,25 +55,18 @@ public class ZombieController : MonoBehaviour
         }
         else
         {
-            // Zombie is close enough to attack
             animator.SetBool("IsRunning", false); // Stop running animation
             if (!isAttacking && Time.time >= nextAttackTime)
             {
-                // Start the attack coroutine if it's not already running
-                StartCoroutine(AttackPlayer());
+                StartCoroutine(AttackPlayer()); // Start the attack coroutine if not attacking
             }
         }
 
-        // Check if health is 0 or less and handle death
-        if (health <= 0)
-        {
-            Die();
-        }
+        if (health <= 0) Die(); // Handle death when health reaches 0
 
-        // Listen for the 'T' key press and apply damage to all zombies
+        // Debug input for testing damage
         if (Input.GetKeyDown(KeyCode.T))
         {
-            // Find all zombies in the scene
             ZombieController[] zombies = FindObjectsOfType<ZombieController>();
             foreach (ZombieController zombie in zombies)
             {
@@ -95,74 +80,91 @@ public class ZombieController : MonoBehaviour
         return Random.Range(1, 14); // Random damage between 1 and 13
     }
 
-    // Coroutine for handling attacking behavior
     IEnumerator AttackPlayer()
     {
-        isAttacking = true; // Set attacking flag
-        agent.isStopped = true; // Stop the agent from moving while attacking
-        animator.SetTrigger("Attack"); // Trigger attack animation
+        isAttacking = true;
+        agent.isStopped = true; 
+        animator.SetTrigger("Attack");
 
-        // Wait for the attack animation to finish playing
         yield return new WaitForSeconds(attackAnimationDuration);
 
-        // Set the next attack time
         nextAttackTime = Time.time + attackInterval;
-
-        // After the attack, reset the attacking flag and resume movement
         isAttacking = false;
-        agent.isStopped = false; // Resume pathfinding after attack
+        agent.isStopped = false;
     }
 
-    // Detect bullet collisions and apply damage
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Bullet")) // Check if the object is a bullet
+        if (collision.gameObject.CompareTag("Bullet")) 
         {
-            TakeDamage(GetDamage()); // Apply damage to the zombie
-            collision.gameObject.SetActive(false); // Destroy the bullet after collision
+            TakeDamage(GetDamage()); 
+            collision.gameObject.SetActive(false); 
         }
     }
 
-    // Reduce the zombie's health by the damage amount
     public void TakeDamage(int damage)
     {
         health -= damage;
 
-        // Update the health bar
         if (healthBarSlider != null)
         {
-            healthBarSlider.value = health; // Update the slider value
+            healthBarSlider.value = health;
         }
 
         if (health <= 0)
         {
-            Die(); // Trigger death if health reaches zero
+            Die(); 
         }
     }
 
-    // Handle zombie death and call the respawn in the spawner
     public void Die()
     {
-        // Stop the zombie's movement and behavior
+        // Stop movement and disable the NavMeshAgent
         agent.isStopped = true;
-        agent.enabled = false; // Disable the NavMeshAgent to prevent unwanted movement
+        agent.enabled = false;
 
-        // Reset health and behavior states
+        // Trigger death animation, if any
+        animator.SetTrigger("Die");
+
+        // Reset health and attack state
         health = 100f;
         isAttacking = false;
-        isFalling = true;
+        isFalling = true; // Set falling flag to true, to skip processing while respawning
 
-        // Deactivate the zombie
+        // Disable the zombie game object
         gameObject.SetActive(false);
 
-        // Call the ZombieSpawner's Die method
+        // Notify the spawner to respawn the zombie
         if (spawner != null)
         {
-            spawner.Die(gameObject);
+            spawner.Die(gameObject); 
         }
         else
         {
-            Debug.LogWarning("ZombieSpawner not found! Ensure there is a ZombieSpawner in the scene.");
+            Debug.LogWarning("No ZombieSpawner found for respawning.");
         }
     }
+
+    public void Respawn(Vector3 newPosition)
+    {
+        // Reposition the zombie at a valid spawn point
+        agent.enabled = false;
+        agent.isStopped = true;
+        isFalling = true;
+        transform.position = newPosition;
+        if (healthBarSlider != null)
+        {
+            healthBarSlider.value = health;
+        }
+        
+        // Re-enable the game object
+        gameObject.SetActive(true);
+
+        // Set a delay before enabling the NavMeshAgent again, allowing falling
+        new WaitForSeconds(1.5f); // Delay before enabling NavMeshAgent again
+        agent.enabled = true;
+        isFalling = false;
+    }
+
+    
 }
