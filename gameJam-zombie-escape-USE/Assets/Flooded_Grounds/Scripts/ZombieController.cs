@@ -104,7 +104,7 @@ public class ZombieController : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet")) 
         {
             TakeDamage(GetDamage()); 
-            collision.gameObject.SetActive(false); 
+            collision.gameObject.SetActive(false);
         }
     }
 
@@ -154,6 +154,7 @@ public class ZombieController : MonoBehaviour
 
     private void ResetHealth()
     {
+        maxHealth += 5;
         health = maxHealth; // Reset health to max health value
     }
 
