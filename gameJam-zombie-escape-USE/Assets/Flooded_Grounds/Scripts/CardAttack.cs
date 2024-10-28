@@ -52,9 +52,9 @@ public class CardsScript : MonoBehaviour{
         for(int n=0; n < cardArr.Length; n++){
             if(!cardArr[n].activeInHierarchy){
                 cardArr[n].SetActive(true);
+                cardArr[n].transform.position = new Vector3(attackPoint.position.x + .1f, attackPoint.position.y, attackPoint.position.z + .1f);
                 currentCard = cardArr[n];
                 break;
-
             }
         }
 
