@@ -11,7 +11,8 @@ public class ZombieController : MonoBehaviour
     public float attackDistance = 1.5f; // Distance to trigger attack
     public float attackInterval = 1f; // Time between attacks
     public float attackAnimationDuration = 1f; // Duration of the attack animation
-    public float health = 100f; // Health value for the zombie
+    public float maxHealth = 100f; // Max health value for the zombie
+    private float health; // Current health value for the zombie
     private bool isAttacking = false; // Flag to control attack coroutine
     private float nextAttackTime = 0f; // Tracks time for the next attack
     private ZombieSpawner spawner; // Reference to the ZombieSpawner
@@ -19,17 +20,22 @@ public class ZombieController : MonoBehaviour
 
     // Health bar UI
     public Slider healthBarSlider; // Reference to the slider in the canvas
+    Rigidbody rb; 
 
-    void Start()
+    void OnEnable()
     {
         agent = GetComponent<NavMeshAgent>(); // Get NavMeshAgent
         animator = GetComponent<Animator>(); // Get Animator
         spawner = FindObjectOfType<ZombieSpawner>(); // Get the ZombieSpawner in the scene
+        rb = gameObject.GetComponent<Rigidbody>();
+
+        // Initialize health
+        ResetHealth();
 
         // Set the max value of the health bar
         if (healthBarSlider != null)
         {
-            healthBarSlider.maxValue = health; // Set the maximum value to match health
+            healthBarSlider.maxValue = maxHealth; // Set the maximum value to match health
             healthBarSlider.value = health; // Set the current value
         }
     }
@@ -127,9 +133,8 @@ public class ZombieController : MonoBehaviour
         animator.SetTrigger("Die");
 
         // Reset health and attack state
-        health = 100f;
         isAttacking = false;
-        isFalling = true; // Set falling flag to true, to skip processing while respawning
+        //isFalling = true; // Set falling flag to true, to skip processing while respawning
 
         // Disable the zombie game object
         gameObject.SetActive(false);
@@ -145,26 +150,12 @@ public class ZombieController : MonoBehaviour
         }
     }
 
-    public void Respawn(Vector3 newPosition)
-    {
-        // Reposition the zombie at a valid spawn point
-        agent.enabled = false;
-        agent.isStopped = true;
-        isFalling = true;
-        transform.position = newPosition;
-        if (healthBarSlider != null)
-        {
-            healthBarSlider.value = health;
-        }
-        
-        // Re-enable the game object
-        gameObject.SetActive(true);
+    
 
-        // Set a delay before enabling the NavMeshAgent again, allowing falling
-        new WaitForSeconds(1.5f); // Delay before enabling NavMeshAgent again
-        agent.enabled = true;
-        isFalling = false;
+    private void ResetHealth()
+    {
+        health = maxHealth; // Reset health to max health value
     }
 
-    
+
 }

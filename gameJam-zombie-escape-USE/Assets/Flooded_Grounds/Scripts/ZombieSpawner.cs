@@ -129,10 +129,10 @@ public class ZombieSpawner : MonoBehaviour
         }
 
         // Call the respawn function on the zombie
-        ZombieController zombieController = zombie.GetComponent<ZombieController>();
+        /*ZombieController zombieController = zombie.GetComponent<ZombieController>();
         if (zombieController != null)
         {
             zombieController.Respawn(spawnPosition); 
-        }
+        }*/
     }
 }
