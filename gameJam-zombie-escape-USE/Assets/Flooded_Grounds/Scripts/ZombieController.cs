@@ -83,8 +83,9 @@ public class ZombieController : MonoBehaviour
             }
         }
         if (playerHealth <= 0){
-            print("Health is 0. Game Over");
+            Debug.Log("Health is 0. Game Over");
             SceneManager.LoadScene("GameOver");
+            
         }
     }
 
@@ -99,7 +100,7 @@ public class ZombieController : MonoBehaviour
         agent.isStopped = true; 
         animator.SetTrigger("Attack");
         playerHealth -= zombieDamage;
-        print("PlayerHealth: " + playerHealth);
+        Debug.Log("PlayerHealth: " + playerHealth);
 
         yield return new WaitForSeconds(attackAnimationDuration);
 
