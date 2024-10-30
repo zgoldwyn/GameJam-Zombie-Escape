@@ -85,6 +85,7 @@ public class ZombieController : MonoBehaviour
         if (playerHealth <= 0){
             Debug.Log("Health is 0. Game Over");
             SceneManager.LoadScene("GameOver");
+            spawner.EndGame();
             
         }
     }

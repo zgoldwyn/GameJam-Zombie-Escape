@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Callbacks;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,16 +15,20 @@ public class ZombieSpawner : MonoBehaviour
     public float spawnRadius = 100f; // Radius around the player where zombies can spawn
     public float spawnRate = 3f; // Time between spawn attempts
     public float respawnDelay = 2f; // Delay before respawning zombies after death
+    public bool gameOver = false;
+    [SerializeField] public GameObject GOcanvas; //gameovercanvas
+    
 
     private void Start()
     {
         StartCoroutine(SpawnZombies()); // Begin the spawn cycle
+        //GOcanvas.SetActive(false);
     }
 
     // Coroutine to manage zombie spawning from the pool
     IEnumerator SpawnZombies()
     {
-        while (true)
+        while (!gameOver)
         {
             // Look for an inactive zombie in the pool
             for (int i = 0; i < zombiePool.Length; i++)
@@ -128,11 +134,15 @@ public class ZombieSpawner : MonoBehaviour
             Debug.LogWarning("Could not find valid NavMesh position for respawn.");
         }
 
-        // Call the respawn function on the zombie
-        /*ZombieController zombieController = zombie.GetComponent<ZombieController>();
-        if (zombieController != null)
+        
+    }
+    public void EndGame(){
+        //end the game
+        gameOver = true;
+        foreach (GameObject zom in zombiePool)
         {
-            zombieController.Respawn(spawnPosition); 
-        }*/
+            zom.SetActive(false);
+        }
+        GOcanvas.SetActive(true);
     }
 }
