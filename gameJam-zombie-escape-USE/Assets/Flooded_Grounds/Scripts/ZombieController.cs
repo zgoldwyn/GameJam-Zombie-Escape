@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Security.Cryptography;
 
 public class ZombieController : MonoBehaviour
 {
@@ -18,8 +19,7 @@ public class ZombieController : MonoBehaviour
     private float nextAttackTime = 0f; // Tracks time for the next attack
     private ZombieSpawner spawner; // Reference to the ZombieSpawner
     public bool isFalling = false; // Detect if the zombie is falling
-    public float playerHealth = 1000f;
-    public float zombieDamage;
+    public static int playerHealth = 100;
 
     // Health bar UI
     public Slider healthBarSlider; // Reference to the slider in the canvas
@@ -99,8 +99,8 @@ public class ZombieController : MonoBehaviour
         isAttacking = true;
         agent.isStopped = true; 
         animator.SetTrigger("Attack");
-        playerHealth -= zombieDamage;
-        Debug.Log("PlayerHealth: " + playerHealth);
+        playerHealth -= Random.Range(1,20);
+        Debug.Log(playerHealth.ToString());
 
         yield return new WaitForSeconds(attackAnimationDuration);
 
