@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ZombieController : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class ZombieController : MonoBehaviour
     private float nextAttackTime = 0f; // Tracks time for the next attack
     private ZombieSpawner spawner; // Reference to the ZombieSpawner
     public bool isFalling = false; // Detect if the zombie is falling
+    public float playerHealth = 1000f;
+    public float zombieDamage;
 
     // Health bar UI
     public Slider healthBarSlider; // Reference to the slider in the canvas
@@ -76,12 +79,16 @@ public class ZombieController : MonoBehaviour
             ZombieController[] zombies = FindObjectsOfType<ZombieController>();
             foreach (ZombieController zombie in zombies)
             {
-                zombie.TakeDamage(GetDamage()); 
+                zombie.TakeDamage(GetZombieDamage()); 
             }
+        }
+        if (playerHealth <= 0){
+            print("Health is 0. Game Over");
+            SceneManager.LoadScene("GameOver");
         }
     }
 
-    public int GetDamage()
+    public int GetZombieDamage()
     {
         return Random.Range(1, 14); // Random damage between 1 and 13
     }
@@ -91,6 +98,8 @@ public class ZombieController : MonoBehaviour
         isAttacking = true;
         agent.isStopped = true; 
         animator.SetTrigger("Attack");
+        playerHealth -= zombieDamage;
+        print("PlayerHealth: " + playerHealth);
 
         yield return new WaitForSeconds(attackAnimationDuration);
 
@@ -103,7 +112,7 @@ public class ZombieController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet")) 
         {
-            TakeDamage(GetDamage()); 
+            TakeDamage(GetZombieDamage()); 
             collision.gameObject.SetActive(false);
         }
     }
