@@ -13,14 +13,15 @@ public class ZombieController : MonoBehaviour
     public float attackDistance = 1.5f; // Distance to trigger attack
     public float attackInterval = 1f; // Time between attacks
     public float attackAnimationDuration = 1f; // Duration of the attack animation
-    public float maxHealth = 100f; // Max health value for the zombie
+    public float maxHealth = 50f; // Max health value for the zombie
     private float health; // Current health value for the zombie
     private bool isAttacking = false; // Flag to control attack coroutine
     private float nextAttackTime = 0f; // Tracks time for the next attack
     private ZombieSpawner spawner; // Reference to the ZombieSpawner
     public bool isFalling = false; // Detect if the zombie is falling
-    public static int playerHealth = 100;
-
+    public static int playerHealth = 500;
+    
+    private int top = 13;
     // Health bar UI
     public Slider healthBarSlider; // Reference to the slider in the canvas
     Rigidbody rb; 
@@ -92,7 +93,14 @@ public class ZombieController : MonoBehaviour
 
     public int GetZombieDamage()
     {
-        return Random.Range(1, 14); // Random damage between 1 and 13
+        
+        
+        int dam = Random.Range(1, top); // Random damage between 1 and 13
+        if (dam < top/2){
+            top++;
+        }
+        return dam;
+
     }
 
     IEnumerator AttackPlayer()
